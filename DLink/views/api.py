@@ -9,11 +9,11 @@ from flask import current_app as app
 from flask_login import current_user as user
 # from py_abac import PDP, AccessRequest, Policy
 from urllib.parse import urljoin, urlencode
-from ..models import ThingDescription, DirectoryNameToURL, TypeToChildrenNames, TargetToChildName, LevelBoundingBox
+from ..models import ThingDescription
 from ..utils import get_target_url, is_json_request, clean_thing_description, add_policy_to_storage,\
     delete_policy_from_storage, is_policy_request, is_request_allowed, get_auth_attributes, set_auth_user_attr,\
     generate_jwt
-from pymongo import MongoClient
+# from pymongo import MongoClient
 # from py_abac.storage.mongo import MongoStorage
 from ..auth.models import auth_db, Policy
 from datetime import datetime

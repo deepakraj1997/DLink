@@ -5,22 +5,17 @@ import flask
 import jwcrypto.jwk as jwk
 import jwt
 from urllib.parse import urljoin
-from py_abac.pdp import EvaluationAlgorithm
-from .models import DirectoryNameToURL, TargetToChildName, DynamicAttributes
+# from py_abac.pdp import EvaluationAlgorithm
+# from .models import DirectoryNameToURL, TargetToChildName, DynamicAttributes
 from flask_login import current_user
 from .auth.models import auth_user_attr_default, auth_server_attr_default
 from .auth import User, AuthAttribute
-from pymongo import MongoClient
-from py_abac.storage.mongo import MongoStorage
-from py_abac import PDP, Policy, AccessRequest
-from py_abac.provider.base import AttributeProvider
+# from pymongo import MongoClient
+# from py_abac.storage.mongo import MongoStorage
+# from py_abac import PDP, Policy, AccessRequest
+# from py_abac.provider.base import AttributeProvider
 import re
-from py_abac.policy.conditions.schema import ConditionSchema
-from .views.GeoConditionBlock.base import *
-from .views.GeoConditionBlock.GeoInside import *
-from .views.AccessFrequencyBlock.base import *
-from .views.AccessFrequencyBlock.AccessFrequencyLte import *
-
+# from py_abac.policy.conditions.schema import ConditionSchema
 
 def is_json_request(request: flask.Request, properties: list = []) -> bool:
     """Check whether the request's body could be parsed to JSON format, and all necessary properties specified by `properties` are in the JSON object
@@ -94,7 +89,7 @@ def delete_policy_from_storage(request : flask.Request)  -> bool :
 
 # check if the request is allowed by policy in the current level
 def is_request_allowed(request: flask.Request) -> bool:
-    """Check whether a request is allowed or not. 
+    """Check whether a request is allowed or not.
     Attributes are retrieved by the attribute providers and in order of the providers. 
 
     Args:
@@ -295,11 +290,11 @@ def format_user_id():
         return None
 
 
-def register_new_schema():
-    ConditionSchema.type_schemas[GeoInside.__name__] = GeoInsideSchema
-    ConditionSchema.type_schemas[AccessFrequencyLte.__name__] = AccessFrequencyLteSchema
+# def register_new_schema():
+#     ConditionSchema.type_schemas[GeoInside.__name__] = GeoInsideSchema
+#     ConditionSchema.type_schemas[AccessFrequencyLte.__name__] = AccessFrequencyLteSchema
 
     
-def increment_access_frequency(thing_id,user_id):
-    DynamicAttributes(attribute_id = thing_id, attribute_name = 'access_frequency',user_id = user_id,attribute_type='thing', attribute_value = 1, attribute_datetime = datetime.now()).save()
+# def increment_access_frequency(thing_id,user_id):
+#     DynamicAttributes(attribute_id = thing_id, attribute_name = 'access_frequency',user_id = user_id,attribute_type='thing', attribute_value = 1, attribute_datetime = datetime.now()).save()
 
