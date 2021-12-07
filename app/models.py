@@ -5,19 +5,28 @@ Classes defined in this file are used with neo4j ORM library mongoengine
 For more information, Please refer to its website: http://mongoengine.org/
 """
 
+# before loading your node definitions
 from neomodel import (config, StringProperty, IntegerProperty,
     RelationshipTo, Relationship)
-from neomodel.contrib import SemiStructuredNode 
+from neomodel.contrib import SemiStructuredNode
+from neomodel.properties import ArrayProperty, JSONProperty
 from config import config as fl_config
 
-config.DATABASE_URL = fl_config["db"]["uri"]
+config.DATABASE_URL = "bolt://neo4j:deepak1234@localhost:7687"
+config.AUTO_INSTALL_LABELS = True
 
 print(config.DATABASE_URL)
 class ThingDescription(SemiStructuredNode):
     """ORM class of Thing Description in the neo4j
     """
     thing_id = StringProperty(unique_index=True, required=True)
-    title = StringProperty()
+    title = StringProperty(required=True)
+    # securityDefinitions = JSONProperty(StringProperty(), required=False)
+    # properties = JSONProperty(required=False)
+    # security = ArrayProperty(StringProperty(), required=False)
+    # actions = JSONProperty(required=False)
+    # events = JSONProperty(required=False)
+    # links = ArrayProperty(JSONProperty(), required=False)
     # controlled = RelationshipTo('ThingDescription', 'ControlledBy')
     # connected = Relationship('ThingDescription', 'ControlledBy')
 

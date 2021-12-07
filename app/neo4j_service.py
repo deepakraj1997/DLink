@@ -19,7 +19,7 @@ class Neo4jService(object):
 
     # Connects to the DB and sets a Graph instance variable.
     # Also creates a NodeMatcher and RelationshipMatcher, which are a py2neo framework classes.
-    def __init__(self,  auth=('neo4j', 'deepak'), host='localhost', port=7687, secure=False, ):
+    def __init__(self,  auth=('neo4j', 'deepak1234'), host='localhost', port=7687, secure=False, ):
         self._graph = Graph(secure=secure,
                             bolt=True,
                             auth=auth,
@@ -52,7 +52,8 @@ class Neo4jService(object):
         """
         #ut.debug_message("Labels = ", labels)
         #ut.debug_message("Properties = ", json.dumps(properties))
-
+        print("Labels = ", labels)
+        print("Properties = ", json.dumps(properties))
         if labels is not None and properties is not None:
             result = self._node_matcher.match(labels, **properties)
         elif labels is not None and properties is None:
@@ -69,15 +70,15 @@ class Neo4jService(object):
 
         return full_result
 
-    def find_nodes_by_template(self, tmp):
+    def find_nodes_by_template(self, label, tmp):
         """
 
         :param tmp: A template defining the label and properties for Nodes to return. An
          example is { "label": "Fan", "template" { "last_name": "Ferguson", "first_name": "Donald" }}
         :return: A list of Nodes matching the template.
         """
-        labels = tmp.get('label', None)
-        props = tmp.get("template", None)
+        labels = label
+        props = tmp
         result = self.run_match(labels=labels, properties=props)
         return result
 
