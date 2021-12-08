@@ -40,11 +40,11 @@ def register():
         HTTP Response: if the register is completed, a simple success string with HTTP status code 200 is returned
             Otherwise a reason is returned in the response and HTTP status code is set to 400
     """
-    if not is_json_request(request, ["id"]):
+    if not is_json_request(request, ["td"]):
         return jsonify(ERROR_JSON), 400
     
     body = request.get_json()
-    thing_description = body
+    thing_description = body["td"]
     fmt_td = format_thing_description(thing_description, ["id", "title"])
     new_td = ThingDescription(thing_id=thing_description["id"], title = thing_description["title"], **fmt_td)
     
@@ -60,7 +60,8 @@ def register():
                 new_err["error"] += "Thing in links not found"
                 return jsonify(new_err), 400
             try:
-                new_td.create_or_update() # new_td.save()
+                # new_td.create_or_update() # new_td.save()
+                new_td.save()
             except UniqueProperty as uq:
                 return make_response("Unique Property Violation, check your input", 400)
             except Exception as e:
@@ -72,9 +73,12 @@ def register():
             nsrv_obj.create_relationship(thing_node, rel, rel_node)
     else:
         try:
-            new_td.create_or_update() # new_td.save()
+            # new_td.save()
+            new_td.save()
+            print()
         except UniqueProperty as uq:
-            return make_response("Unique Property Violation, check your input", 400)
+            # new_td.create_or_update()
+            return make_response("Thing already registered, check your input", 400)
         except Exception as e:
             print(e)
             return make_response("Internal Server Error", 500)

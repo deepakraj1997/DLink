@@ -11,6 +11,14 @@ def home():
     """
     return render_template("register.html", tagname = 'home')
 
+@dashboard.route('/links')
+def home():
+    """
+    Render the home page for the 'dashboard' module
+    This returns the names and URLs of adjacent directories
+    """
+    return render_template("links.html", tagname = 'links')
+
 @dashboard.route('/query')
 def query():
     """
