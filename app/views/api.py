@@ -27,7 +27,7 @@ def delete_local_thing_description(thing_id: str) -> bool:
     delete_thing.delete()
     return True
 
-
+# Case links in same belongs to not handled
 @api.route('/register', methods=['POST'])
 def register():
     """Register thing description at the target location. 
@@ -79,6 +79,14 @@ def register():
                 thing_node = nsrv_obj.find_nodes_by_template("ThingDescription", {"thing_id":thing_description["id"]})[0]
                 thing_node.add_label(rel_thing_id)
                 nsrv_obj._graph.push(thing_node)
+                label_nodes = nsrv_obj.find_nodes_by_template(rel_thing_id, {"setup": True})
+                label_node = None
+                setup_args = {"setup": True}
+                if not label_nodes:
+                    label_node = nsrv_obj.create_node(rel_thing_id, **setup_args)
+                else:
+                    label_node = label_nodes[0]
+                nsrv_obj.create_relationship(thing_node, rel, label_node)
     
     return make_response("Created", 200)
 

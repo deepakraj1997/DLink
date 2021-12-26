@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+from neo4j_service import Neo4jService
 
 dashboard = Blueprint('dashboard', __name__)
 
@@ -10,6 +11,17 @@ def home():
     This returns the names and URLs of adjacent directories
     """
     return render_template("register.html", tagname = 'home')
+
+@dashboard.route('/links/<setup>')
+def setup_links(setup):
+    """
+    Render the home page for the 'dashboard' module
+    This returns the names and URLs of adjacent directories
+    """
+    nsrv_obj = Neo4jService()
+    all_setups = nsrv_obj.run_q("MATCH (n)-[belongsTo]->(m) RETURN m")
+    print(all_setups)
+    return render_template("links.html", tagname = 'links', setup = setup)
 
 @dashboard.route('/links')
 def links():

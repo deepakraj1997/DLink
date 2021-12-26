@@ -5,10 +5,30 @@
 {% endblock link %}
 
 {% block body %}
-<body onload="draw()">
-  <div style="margin-left: 20%;"
-  <div id="viz"></div>
+<div class="container-sm dashboard">
+  <div class="row sidebar-row">
+    <div class="col-md-9 menus list-group">
+      <a class="list-group-item list-group-item-action {{ 'active' if tagname == 'register' else '' }}"
+        href="{{ url_for('dashboard.register') }}">
+        Register
+      </a>
+      <a class="list-group-item list-group-item-action {{ 'active' if tagname == 'delete' else '' }}"
+        href="{{ url_for('dashboard.delete')}}">
+        Delete
+      </a>
+      <hr>
+    </div>
+    
+    <div class="col-md-9 main">
+      <body onload="draw()">
+        <div style="margin-left: 20%;"
+        <div id="viz"></div>
+      </div>
+    </div>
+
+  </div>
 </div>
+
   
   <!-- Cypher query: <textarea rows="4" cols=50 id="cypher"></textarea><br>
   <input type="submit" value="Submit" id="reload">
@@ -52,7 +72,7 @@
       // 		"caption": false
       // 	}
       // },
-      initial_cypher: "MATCH (n)-[rel]->(m) RETURN n,rel,m"
+      initial_cypher: "MATCH (n:{{setup}})-[rel]->(m) RETURN n,rel,m"
     };
 
     viz = new NeoVis.default(config);
