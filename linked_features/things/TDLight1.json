@@ -99,5 +99,10 @@
         "href": "urn:dev:wot:com:example:servient:31",
         "rel": "controlledBy",
         "mediaType": "application/td"
+    },
+    {
+        "href": "home_setup",
+        "rel": "belongsTo",
+        "mediaType": "application/td"
     }]
 }

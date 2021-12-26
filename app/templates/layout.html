@@ -14,6 +14,14 @@
 
     {% endblock%}
     <title>DLink - Directory Links</title>
+    <style type="text/css">
+        #viz {
+            width: 900px;
+            height: 700px;
+            border: 1px solid lightgray;
+            font: 22pt arial;
+        }
+    </style>
 </head>
 
 <body>
@@ -32,7 +40,7 @@
                         <a class="nav-link" href="{{url_for('dashboard.home')}}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('dashboard.register')}}">View Links</a>
+                        <a class="nav-link" href="{{url_for('dashboard.links')}}">View Links</a>
                     </li>
                 </ul>
             </div>

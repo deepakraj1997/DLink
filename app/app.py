@@ -7,8 +7,8 @@ from models import *
 
 def main(init_db=True, debug=True, host='localhost'):
     app = Flask(__name__)
-    app.register_blueprint(api, url_prefix = '/api')
     app.register_blueprint(dashboard, url_prefix = '/')
+    app.register_blueprint(api, url_prefix = '/api')
     app.config.update(**config_dict)
     print(app.config)
     # Initialize all constraints in DB

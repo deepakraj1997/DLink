@@ -1,5 +1,5 @@
 import json
-from logging import Logger
+from logging import Logger, error
 from flask import Blueprint, config, request, url_for, redirect, Response, make_response, jsonify, session, render_template
 from flask import current_app as app
 from flask_login import current_user as user
@@ -46,42 +46,39 @@ def register():
     body = request.get_json()
     thing_description = body["td"]
     fmt_td = format_thing_description(thing_description, ["id", "title"])
-    new_td = ThingDescription(thing_id=thing_description["id"], title = thing_description["title"], **fmt_td)
-    
+    new_td = ThingDescription(thing_id=thing_description["id"], title = thing_description["title"], **fmt_td)    
+    nsrv_obj = Neo4jService()
+    try:
+        # new_td.create_or_update() # new_td.save()
+        new_td.save()
+    except UniqueProperty as _:
+        return make_response("Unique Property Violation, check your input", 400)
+
     if "links" in thing_description:
         for link in thing_description["links"]:
             rel = link["rel"]
             rel_thing_id = link["href"]
-            try:
-                _ = ThingDescription.nodes.first(thing_id=rel_thing_id)
-            except Exception as e:
-                print(e)
-                new_err = ERROR_JSON
-                new_err["error"] += "Thing in links not found"
-                return jsonify(new_err), 400
-            try:
-                # new_td.create_or_update() # new_td.save()
-                new_td.save()
-            except UniqueProperty as uq:
-                return make_response("Unique Property Violation, check your input", 400)
-            except Exception as e:
-                return make_response("Internal Server Error", 500)
-            print(rel_thing_id)
-            nsrv_obj = Neo4jService()
-            rel_node = nsrv_obj.find_nodes_by_template("ThingDescription", {"thing_id":rel_thing_id})[0]
-            thing_node = nsrv_obj.find_nodes_by_template("ThingDescription", {"thing_id":thing_description["id"]})[0]
-            nsrv_obj.create_relationship(thing_node, rel, rel_node)
-    else:
-        try:
-            # new_td.save()
-            new_td.save()
-            print()
-        except UniqueProperty as uq:
-            # new_td.create_or_update()
-            return make_response("Thing already registered, check your input", 400)
-        except Exception as e:
-            print(e)
-            return make_response("Internal Server Error", 500)
+            if rel != "belongsTo":
+                try:
+                    # _ = ThingDescription.nodes.first(thing_id=rel_thing_id)
+                    rel_node = nsrv_obj.find_nodes_by_template("ThingDescription", {"thing_id":rel_thing_id})
+                    if not rel_node:
+                        raise error("Rel Thing not found")
+                except Exception as e:
+                    print(e)
+                    new_err = ERROR_JSON
+                    new_err["error"] += "Thing in links not found"
+                    return jsonify(new_err), 400
+                except Exception as e:
+                    return make_response("Internal Server Error", 500)
+                print(rel_thing_id)
+                rel_node = nsrv_obj.find_nodes_by_template("ThingDescription", {"thing_id":rel_thing_id})[0]
+                thing_node = nsrv_obj.find_nodes_by_template("ThingDescription", {"thing_id":thing_description["id"]})[0]
+                nsrv_obj.create_relationship(thing_node, rel, rel_node)
+            else:
+                thing_node = nsrv_obj.find_nodes_by_template("ThingDescription", {"thing_id":thing_description["id"]})[0]
+                thing_node.add_label(rel_thing_id)
+                nsrv_obj._graph.push(thing_node)
     
     return make_response("Created", 200)
 
@@ -124,4 +121,9 @@ def register():
 #             new_err = ERROR_JSON
 #             new_err["error"] += "Thing in links not found"
 #             return jsonify(new_err), 400
-        
+
+@api.route('/delete', methods=['POST'])
+def delete():
+    """Deletes a thing
+    """
+    
