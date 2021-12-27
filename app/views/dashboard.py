@@ -19,7 +19,7 @@ def setup_links(setup):
     This returns the names and URLs of adjacent directories
     """
     nsrv_obj = Neo4jService()
-    all_setups = nsrv_obj.run_q("MATCH (n)-[belongsTo]->(m) RETURN m")
+    all_setups = nsrv_obj.run_q("MATCH (n)-[belongsTo]->(m) RETURN m", {})
     print(all_setups)
     return render_template("links.html", tagname = 'links', setup = setup)
 

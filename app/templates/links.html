@@ -72,7 +72,7 @@
       // 		"caption": false
       // 	}
       // },
-      initial_cypher: "MATCH (n:{{setup}})-[rel]->(m) RETURN n,rel,m"
+      initial_cypher: "MATCH (n:{{setup}})<-[rel]-(m:ThingDescription)-[rel1]->(o:ThingDescription) return m, rel1, o"
     };
 
     viz = new NeoVis.default(config);

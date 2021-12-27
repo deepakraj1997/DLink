@@ -82,7 +82,7 @@ class Neo4jService(object):
         result = self.run_match(labels=labels, properties=props)
         return result
 
-    def convert_nested_json_to_str(data):
+    def convert_nested_json_to_str(self, data):
         newdata = {}
         for key, value in data.items():
             if type(value) == dict:
