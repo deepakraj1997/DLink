@@ -7,15 +7,13 @@
 {% block body %}
 <div class="container-sm dashboard">
   <div class="row sidebar-row">
-    <div class="col-md-9 menus list-group">
-      <a class="list-group-item list-group-item-action {{ 'active' if tagname == 'register' else '' }}"
-        href="{{ url_for('dashboard.register') }}">
-        Register
+    <div class="col-md-3 menus list-group">
+      {% for label in setup_labels %}
+      <a class="list-group-item list-group-item-action {{ 'active' if setup == label else '' }}"
+        href="{{ url_for('dashboard.links') }}/{{label}}">
+        {{label}}
       </a>
-      <a class="list-group-item list-group-item-action {{ 'active' if tagname == 'delete' else '' }}"
-        href="{{ url_for('dashboard.delete')}}">
-        Delete
-      </a>
+      {% endfor %}
       <hr>
     </div>
     

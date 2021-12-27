@@ -19,9 +19,11 @@ def setup_links(setup):
     This returns the names and URLs of adjacent directories
     """
     nsrv_obj = Neo4jService()
-    all_setups = nsrv_obj.run_q("MATCH (n)-[belongsTo]->(m) RETURN m", {})
-    print(all_setups)
-    return render_template("links.html", tagname = 'links', setup = setup)
+    all_setups = nsrv_obj.run_q("MATCH (n)-[:belongsTo]->(m) RETURN m", {})
+    setups_json = all_setups.data()
+    setups_labels = [list(node['m'].labels)[0] for node in setups_json]
+    # [{'m': Node('home_setup', setup=True)}, {'m': Node('home_setup', setup=True)}]
+    return render_template("links.html", tagname = 'links', setup = setup, setup_labels = set(setups_labels))
 
 @dashboard.route('/links')
 def links():
@@ -29,7 +31,12 @@ def links():
     Render the home page for the 'dashboard' module
     This returns the names and URLs of adjacent directories
     """
-    return render_template("links.html", tagname = 'links')
+    nsrv_obj = Neo4jService()
+    all_setups = nsrv_obj.run_q("MATCH (n)-[:belongsTo]->(m) RETURN m", {})
+    setups_json = all_setups.data()
+    setups_labels = [list(node['m'].labels)[0] for node in setups_json]
+    # [{'m': Node('home_setup', setup=True)}, {'m': Node('home_setup', setup=True)}]
+    return render_template("links.html", tagname = 'links', setup = setups_labels[0], setup_labels = set(setups_labels))
 
 @dashboard.route('/delete')
 def delete():
