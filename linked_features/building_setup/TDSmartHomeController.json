@@ -1,0 +1,64 @@
+{
+    "@context": "https://www.w3.org/2019/wot/td/v1",
+    "id": "urn:dev:wot:com:controller:building:1",
+    "title": "building-controller",
+    "@type": "smart_controller",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        },
+        "nosec_sc": {
+            "scheme": "nosec"
+        }
+    },
+    "security": [
+        "nosec_sc"
+    ],
+    "properties": {
+        "on": {
+            "writable": true,
+            "schema": { "type": "boolean" },
+            "forms": [{ "href": "/things/smart_controller/properties/on" }]
+        }
+    },
+    "actions": {
+        "switch_on_all": {
+            "inputSchema": {
+              "type": "object",
+              "fields": [
+                {
+                    "name": "on",
+                    "schema": { "type": "boolean" }
+                }
+            ]
+            },
+            "forms": [{ "href": "/things/smart_controller/actions/switch_on_all" }]
+        }
+    },
+    "events": {
+        "irregular_shutdown": {
+            "description": "Emergency / Failure shutdown",
+            "forms": [
+                {
+                    "href": "http:www.a.a",
+                    "contentType": "application/json",
+                    "op": [
+                        "subscribeevent"
+                    ]
+                }
+            ]
+        }
+    },
+    "links": [
+        {
+            "href": "building_setup",
+            "rel": "belongsTo",
+            "mediaType": "application/td"
+        },
+        {
+            "href": "urn:dev:wot:com:noniot:router:1",
+            "rel": "connectedTo",
+            "mediaType": "application/td"
+        }]
+}
