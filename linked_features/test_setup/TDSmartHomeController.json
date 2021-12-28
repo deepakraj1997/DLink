@@ -71,7 +71,7 @@
     },
     "links": [
     {
-        "href": "home_setup",
+        "href": "test_setup",
         "rel": "belongsTo",
         "mediaType": "application/td"
     }]

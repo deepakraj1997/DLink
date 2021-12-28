@@ -1,8 +1,8 @@
 {
     "@context": "https://www.w3.org/2019/wot/td/v1",
-    "id": "urn:dev:wot:com:example:servient:11",
-    "title": "light1",
-    "@type": "light",
+    "id": "urn:dev:wot:com:smartplug:plug:1",
+    "title": "smart-plug",
+    "@type": "smartplug",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",
@@ -20,16 +20,11 @@
             "writable": true,
             "schema": { "type": "boolean" },
             "forms": [{ "href": "/things/lamp/properties/on" }]
-          },
-          "brightness": {
-            "writable": true,
-            "schema": "range",
-            "forms": [{ "href": "/things/lamp/properties/brightness" }]
           }
     },
     "actions": {
         "switch-on": {
-            "description": "On the light",
+            "description": "On the plug",
             "forms": [
                 {
                     "href": "http:www.a.a",
@@ -43,7 +38,7 @@
             "idempotent": false
         }, 
         "switch-off": {
-            "description": "Off the light",
+            "description": "Off the plug",
             "forms": [
                 {
                     "href": "http:www.a.a",
@@ -96,7 +91,7 @@
         }
     },
     "links": [{
-        "href": "urn:dev:wot:com:example:servient:31",
+        "href": "urn:dev:wot:com:controller:home:1",
         "rel": "controlledBy",
         "mediaType": "application/td"
     },

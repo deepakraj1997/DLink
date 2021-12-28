@@ -101,7 +101,7 @@
         "mediaType": "application/td"
     },
     {
-        "href": "building_setup",
+        "href": "test_setup",
         "rel": "belongsTo",
         "mediaType": "application/td"
     }]

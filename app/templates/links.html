@@ -68,9 +68,8 @@
   // define config car
   // instantiate nodevis object
   // draw
-
   var viz;
-
+  
   function draw() {
     var config = {
       container_id: "viz",
@@ -78,19 +77,22 @@
       server_user: "neo4j",
       server_password: "deepak1234",
       labels: {
-        //"Character": "name",
         "ThingDescription": {
 					"caption": "title",
 					"thing_id": "thing_id",
 					"@type": "@type"
-          //"sizeCypher": "MATCH (n) WHERE id(n) = {id} MATCH (n)-[r]-() RETURN sum(r.weight) AS c"
         }
       },
+      arrows:true,
       // relationships: {
-      // 	"INTERACTS": {
-      // 		"thickness": "weight",
-      // 		"caption": false
-      // 	}
+      //   [NeoVis.NEOVIS_DEFAULT_CONFIG]: {
+      //       "thickness": "defaultThicknessProperty",
+      //       "caption": "defaultCaption"
+      //   }
+      // 	// "INTERACTS": {
+      // 	// 	"thickness": "weight",
+      // 	// 	"caption": false
+      // 	// }
       // },
       initial_cypher: "MATCH (n:{{setup}})<-[rel]-(m:ThingDescription)-[rel1]->(o:ThingDescription) return m, rel1, o"
     };
@@ -104,7 +106,7 @@
             node_actions = JSON.parse(node.raw.properties.actions);
             node_events = JSON.parse(node.raw.properties.events);
             document.getElementById("node_controller").style.visibility = "visible";
-            document.getElementById("node_label").innerHTML = node.raw.properties.title + " Selected";
+            document.getElementById("node_label").innerHTML = node.raw.properties.title;
             document.getElementById("node_actions").innerHTML = ""
             document.getElementById("node_events").innerHTML = ""
             for(action in node_actions) {
@@ -113,7 +115,6 @@
             for(event in node_events) {
               document.getElementById("node_events").innerHTML += '<a class="dropdown-item" onclick="simulate_event()">'+ event + '</a>';
             }
-          // <a class="dropdown-item" href="#">Dropdown link</a>
         });
     });
 
