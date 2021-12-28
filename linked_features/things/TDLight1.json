@@ -1,7 +1,7 @@
 {
     "@context": "https://www.w3.org/2019/wot/td/v1",
     "id": "urn:dev:wot:com:example:servient:11",
-    "title": "olDjtZ",
+    "title": "light1",
     "@type": "light",
     "securityDefinitions": {
         "basic_sc": {
