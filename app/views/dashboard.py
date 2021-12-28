@@ -36,7 +36,7 @@ def links():
     setups_json = all_setups.data()
     setups_labels = [list(node['m'].labels)[0] for node in setups_json]
     # [{'m': Node('home_setup', setup=True)}, {'m': Node('home_setup', setup=True)}]
-    return render_template("links.html", tagname = 'links', setup = setups_labels[0], setup_labels = set(setups_labels))
+    return render_template("links.html", tagname = 'links', setup = setups_labels[0] if setups_labels else "", setup_labels = set(setups_labels))
 
 @dashboard.route('/delete')
 def delete():
