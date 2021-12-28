@@ -105,6 +105,8 @@
             node_events = JSON.parse(node.raw.properties.events);
             document.getElementById("node_controller").style.visibility = "visible";
             document.getElementById("node_label").innerHTML = node.raw.properties.title + " Selected";
+            document.getElementById("node_actions").innerHTML = ""
+            document.getElementById("node_events").innerHTML = ""
             for(action in node_actions) {
               document.getElementById("node_actions").innerHTML += '<a class="dropdown-item" onclick="node_action()">'+ action + '</a>';
             }
