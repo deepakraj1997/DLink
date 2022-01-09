@@ -19,8 +19,27 @@
         "on": {
             "writable": true,
             "schema": { "type": "boolean" },
-            "forms": [{ "href": "/things/lamp/properties/on" }]
-          }
+            "forms": [{ "href": "/things/lamp/properties/on" }],
+            "status": true
+          },
+        "off": {
+            "writable": true,
+            "schema": { "type": "boolean" },
+            "forms": [{ "href": "/things/lamp/properties/off" }],
+            "status": false
+        },
+        "recording-on": {
+            "writable": true,
+            "schema": { "type": "boolean" },
+            "forms": [{ "href": "/things/lamp/properties/recording" }],
+            "status": false
+        },
+        "recording-off": {
+            "writable": true,
+            "schema": { "type": "boolean" },
+            "forms": [{ "href": "/things/lamp/properties/recording" }],
+            "status": true
+        }
     },
     "actions": {
         "switch-on": {
@@ -31,7 +50,9 @@
                     "contentType": "application/json",
                     "op": [
                         "invokeaction"
-                    ]
+                    ],
+                    "function": "on",
+                    "type": "self"
                 }
             ],
             "safe": false,
@@ -45,7 +66,9 @@
                     "contentType": "application/json",
                     "op": [
                         "invokeaction"
-                    ]
+                    ],
+                    "function": "off",
+                    "type": "self"
                 }
             ],
             "safe": false,
@@ -59,7 +82,9 @@
                     "contentType": "application/json",
                     "op": [
                         "invokeaction"
-                    ]
+                    ],
+                    "function": "recording-on",
+                    "type": "self"
                 }
             ],
             "safe": false,
@@ -73,7 +98,9 @@
                     "contentType": "application/json",
                     "op": [
                         "invokeaction"
-                    ]
+                    ],
+                    "function": "recording-off",
+                    "type": "self"
                 }
             ],
             "safe": false,

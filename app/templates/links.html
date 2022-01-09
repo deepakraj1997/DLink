@@ -68,6 +68,22 @@
   // define config car
   // instantiate nodevis object
   // draw
+  
+  function node_action(action, thing_id) {
+    var action_url = "{{ url_for('api.action') |safe }}";
+    fetch(action_url + "/" + action + "/" + thing_id, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => {
+      console.log("Success")
+    }).catch(response => {
+      console.log("Error")
+      console.log(response)
+    });
+  }
+
   var viz;
   
   function draw() {
@@ -110,10 +126,12 @@
             document.getElementById("node_actions").innerHTML = ""
             document.getElementById("node_events").innerHTML = ""
             for(action in node_actions) {
-              document.getElementById("node_actions").innerHTML += '<a class="dropdown-item" onclick="node_action()">'+ action + '</a>';
+              var actn = '<a class="dropdown-item" onclick="node_action(`'+ action +'`, `'+ node.raw.properties.thing_id +'`)">'+ action + '</a>'
+              document.getElementById("node_actions").innerHTML += String(actn);
             }
             for(event in node_events) {
-              document.getElementById("node_events").innerHTML += '<a class="dropdown-item" onclick="simulate_event()">'+ event + '</a>';
+              var actn = '<a class="dropdown-item" onclick="simulate_event(`'+ event +'`, `'+ node.raw.properties.thing_id +'`)">'+ event + '</a>'
+              document.getElementById("node_events").innerHTML += String(actn);
             }
         });
     });

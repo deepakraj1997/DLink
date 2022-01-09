@@ -1,6 +1,6 @@
 {
     "@context": "https://www.w3.org/2019/wot/td/v1",
-    "id": "urn:dev:wot:com:smartplug:plug:1",
+    "id": "urn:dev:wot:com:smartplug:plug:2",
     "title": "smart-plug",
     "@type": "smartplug",
     "securityDefinitions": {

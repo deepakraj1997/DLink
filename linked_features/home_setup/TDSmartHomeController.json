@@ -19,21 +19,48 @@
         "on": {
             "writable": true,
             "schema": { "type": "boolean" },
-            "forms": [{ "href": "/things/smart_controller/properties/on" }]
+            "forms": [{ "href": "/things/smart_controller/properties/on" }],
+            "status": true
+        },
+        "off": {
+            "writable": true,
+            "schema": { "type": "boolean" },
+            "forms": [{ "href": "/things/smart_controller/properties/on" }],
+            "status": false
         }
     },
     "actions": {
         "switch_on_all": {
-            "inputSchema": {
-              "type": "object",
-              "fields": [
+            "description": "Switch on all childs",
+            "forms": [
                 {
-                    "name": "on",
-                    "schema": { "type": "boolean" }
+                    "href": "http:www.a.a",
+                    "contentType": "application/json",
+                    "op": [
+                        "invokeaction"
+                    ],
+                    "function": "on",
+                    "type": "dependents"
                 }
-            ]
-            },
-            "forms": [{ "href": "/things/smart_controller/actions/switch_on_all" }]
+            ],
+            "safe": false,
+            "idempotent": false
+        },
+        "switch_off_all": {
+            "description": "Switch off all childs",
+            "forms": [
+                {
+                    "href": "http:www.a.a",
+                    "contentType": "application/json",
+                    "op": [
+                        "invokeaction"
+                    ],
+                    "function": "off",
+                    "type": "dependents"
+                }
+            ],
+            "safe": false,
+            "idempotent": false
         }
     },
     "events": {

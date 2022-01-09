@@ -101,43 +101,36 @@ def delete(thing_id):
     nsrv_obj.delete_node(thing_node)
     return make_response("Deleted", 200)
 
-# @api.route('/update_links', methods=['POST'])
-# def update_links():
-#     """
-#     Update links for thing description
+@api.route('/action')
+@api.route('/action/<action>/<thing_id>')
+def action(action, thing_id):
+    """
+        Simulates an action of a thing
+    """
+    nsrv_obj = Neo4jService()
+    thing_node = nsrv_obj.find_nodes_by_template("ThingDescription", {"thing_id":thing_id})[0]
+    thing_actions = json.loads(thing_node["actions"])
+    selected_action = thing_actions[action]
+    thing_properties = json.loads(thing_node["properties"])
 
-#     Args: id and list of valid links
+    if selected_action["forms"][0]["type"] == "self":
+        if not thing_properties["on"]["status"]:
+            return make_response("Thing is not on!", 400)
+        if selected_action["forms"][0]["function"] in thing_properties:
+            thing_properties[selected_action["forms"][0]["function"]]["status"] = not thing_properties[selected_action["forms"][0]["function"]]["status"]
+            thing_node["properties"] = json.dumps(thing_properties)
+            nsrv_obj._graph.push(thing_node)
+    else:
+        query_res = nsrv_obj.run_q("MATCH (m:ThingDescription)-[rel1]->(o:ThingDescription) where m.thing_id=$thing_id return o", {"thing_id": thing_id})
+        child_nodes = query_res.data()
 
-#     Returns: Returns Success if links are updated for thing description and if the links are valid
-#     """
+        for node in child_nodes:
+            child_properties = json.loads(node['n']["properties"])
+            if not child_properties["on"]["status"]:
+                continue
+            if selected_action["forms"][0]["function"] in child_properties:
+                child_properties[selected_action["forms"][0]["function"]]["status"] = not child_properties[selected_action["forms"][0]["function"]]["status"]
+                node['n']["properties"] = json.dumps(child_properties)
+                nsrv_obj._graph.push(node)             
 
-#     if not is_json_request(request, ["id", "links"]):
-#         return jsonify(ERROR_JSON), 400
-    
-#     body = request.get_json()
-#     thing_id = body["id"]
-#     links = body["links"]
-#     thing_description = None
-
-#     try:
-#         thing_description = ThingDescription.nodes.first(thing_id=thing_id)
-#         th_links = json.loads(thing_description["links"])
-#         th_links += links
-#         thing_description["links"] = json.dumps(th_links)
-#     except Exception as e:
-#         print(e)
-#         new_err = ERROR_JSON
-#         new_err["error"] += "Thing with ID not found"
-#         return jsonify(new_err), 400
-
-#     for link in links["links"]:
-#         rel = link["rel"]
-#         rel_thing_id = link["href"]
-#         try:
-#             _ = ThingDescription.nodes.first(thing_id=rel_thing_id)
-#         except Exception as e:
-#             print(e)
-#             new_err = ERROR_JSON
-#             new_err["error"] += "Thing in links not found"
-#             return jsonify(new_err), 400
-    
+    return make_response("Action Successful", 200)
