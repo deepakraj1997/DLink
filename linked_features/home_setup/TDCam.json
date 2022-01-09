@@ -90,7 +90,7 @@
                     "op": [
                         "invokeaction"
                     ],
-                    "function": "recording-off",
+                    "function": "recording-on",
                     "negate": true,
                     "type": "self"
                 }

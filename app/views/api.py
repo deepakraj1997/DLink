@@ -121,16 +121,17 @@ def action(action, thing_id):
             thing_node["properties"] = json.dumps(thing_properties)
             nsrv_obj._graph.push(thing_node)
     else:
-        query_res = nsrv_obj.run_q("MATCH (m:ThingDescription)-[rel1]->(o:ThingDescription) where o.thing_id=$thing_id return m", {"thing_id": thing_id})
+        query_res = nsrv_obj.run_q("MATCH (n:ThingDescription)-[rel1]->(o:ThingDescription) where o.thing_id=$thing_id return n", {"thing_id": thing_id})
         child_nodes = query_res.data()
 
         for node in child_nodes:
+            print(node)
             child_properties = json.loads(node['n']["properties"])
-            if not child_properties["on"]["status"]:
+            if selected_action["forms"][0]["function"] != "on" and not child_properties["on"]["status"]:
                 continue
             if selected_action["forms"][0]["function"] in child_properties:
                 child_properties[selected_action["forms"][0]["function"]]["status"] = not selected_action["forms"][0]["negate"]
                 node['n']["properties"] = json.dumps(child_properties)
-                nsrv_obj._graph.push(node)             
+                nsrv_obj._graph.push(node['n'])             
 
     return make_response("Action Successful", 200)

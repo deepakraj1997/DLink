@@ -50,7 +50,7 @@
                     "op": [
                         "invokeaction"
                     ],
-                    "function": "off",
+                    "function": "on",
                     "negate": true,
                     "type": "dependents"
                 }
