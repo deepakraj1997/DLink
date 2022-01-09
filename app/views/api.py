@@ -114,14 +114,14 @@ def action(action, thing_id):
     thing_properties = json.loads(thing_node["properties"])
 
     if selected_action["forms"][0]["type"] == "self":
-        if not thing_properties["on"]["status"]:
+        if selected_action["forms"][0]["function"] != "on" and not thing_properties["on"]["status"]:
             return make_response("Thing is not on!", 400)
         if selected_action["forms"][0]["function"] in thing_properties:
-            thing_properties[selected_action["forms"][0]["function"]]["status"] = not thing_properties[selected_action["forms"][0]["function"]]["status"]
+            thing_properties[selected_action["forms"][0]["function"]]["status"] = not selected_action["forms"][0]["negate"]
             thing_node["properties"] = json.dumps(thing_properties)
             nsrv_obj._graph.push(thing_node)
     else:
-        query_res = nsrv_obj.run_q("MATCH (m:ThingDescription)-[rel1]->(o:ThingDescription) where m.thing_id=$thing_id return o", {"thing_id": thing_id})
+        query_res = nsrv_obj.run_q("MATCH (m:ThingDescription)-[rel1]->(o:ThingDescription) where o.thing_id=$thing_id return m", {"thing_id": thing_id})
         child_nodes = query_res.data()
 
         for node in child_nodes:
@@ -129,7 +129,7 @@ def action(action, thing_id):
             if not child_properties["on"]["status"]:
                 continue
             if selected_action["forms"][0]["function"] in child_properties:
-                child_properties[selected_action["forms"][0]["function"]]["status"] = not child_properties[selected_action["forms"][0]["function"]]["status"]
+                child_properties[selected_action["forms"][0]["function"]]["status"] = not selected_action["forms"][0]["negate"]
                 node['n']["properties"] = json.dumps(child_properties)
                 nsrv_obj._graph.push(node)             
 

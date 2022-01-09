@@ -22,23 +22,11 @@
             "forms": [{ "href": "/things/lamp/properties/on" }],
             "status": true
           },
-        "off": {
-            "writable": true,
-            "schema": { "type": "boolean" },
-            "forms": [{ "href": "/things/lamp/properties/off" }],
-            "status": false
-        },
         "recording-on": {
             "writable": true,
             "schema": { "type": "boolean" },
             "forms": [{ "href": "/things/lamp/properties/recording" }],
             "status": false
-        },
-        "recording-off": {
-            "writable": true,
-            "schema": { "type": "boolean" },
-            "forms": [{ "href": "/things/lamp/properties/recording" }],
-            "status": true
         }
     },
     "actions": {
@@ -52,12 +40,13 @@
                         "invokeaction"
                     ],
                     "function": "on",
+                    "negate": false,
                     "type": "self"
                 }
             ],
             "safe": false,
             "idempotent": false
-        }, 
+        },
         "switch-off": {
             "description": "Off the cam",
             "forms": [
@@ -67,14 +56,15 @@
                     "op": [
                         "invokeaction"
                     ],
-                    "function": "off",
+                    "function": "on",
+                    "negate": true,
                     "type": "self"
                 }
             ],
             "safe": false,
             "idempotent": false
-        }, 
-        "start-record": {
+        },
+        "record-on": {
             "description": "Start Recording",
             "forms": [
                 {
@@ -84,14 +74,15 @@
                         "invokeaction"
                     ],
                     "function": "recording-on",
+                    "negate": false,
                     "type": "self"
                 }
             ],
             "safe": false,
             "idempotent": false
-        }, 
-        "stop-record": {
-            "description": "Start Recording",
+        },
+        "record-off": {
+            "description": "Stop Recording",
             "forms": [
                 {
                     "href": "http:www.a.a",
@@ -100,6 +91,7 @@
                         "invokeaction"
                     ],
                     "function": "recording-off",
+                    "negate": true,
                     "type": "self"
                 }
             ],

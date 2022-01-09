@@ -21,12 +21,6 @@
             "schema": { "type": "boolean" },
             "forms": [{ "href": "/things/smart_controller/properties/on" }],
             "status": true
-        },
-        "off": {
-            "writable": true,
-            "schema": { "type": "boolean" },
-            "forms": [{ "href": "/things/smart_controller/properties/on" }],
-            "status": false
         }
     },
     "actions": {
@@ -40,6 +34,7 @@
                         "invokeaction"
                     ],
                     "function": "on",
+                    "negate": false,
                     "type": "dependents"
                 }
             ],
@@ -56,6 +51,7 @@
                         "invokeaction"
                     ],
                     "function": "off",
+                    "negate": true,
                     "type": "dependents"
                 }
             ],
