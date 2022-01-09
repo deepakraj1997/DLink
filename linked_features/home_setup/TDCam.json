@@ -127,5 +127,10 @@
         "href": "home_setup",
         "rel": "belongsTo",
         "mediaType": "application/td"
+    },
+    {
+        "href": "urn:dev:wot:com:noniot:room:1",
+        "rel": "feeds",
+        "mediaType": "application/td"
     }]
 }
