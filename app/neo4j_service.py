@@ -74,7 +74,7 @@ class Neo4jService(object):
         """
 
         :param tmp: A template defining the label and properties for Nodes to return. An
-         example is { "label": "Fan", "template" { "last_name": "Ferguson", "first_name": "Donald" }}
+         example is { "label": "Fan", "template" { "last_name": "Raj", "first_name": "Deepak" }}
         :return: A list of Nodes matching the template.
         """
         labels = label
@@ -97,7 +97,12 @@ class Neo4jService(object):
         tx = self._graph.begin(autocommit=True)
         tx.create(n)
         return n
-    
+
+    def delete_node(self, node):
+        tx = self._graph.begin(autocommit=True)
+        tx.delete(node)
+        return True
+
     def create_relationship(self, source_a, relationship, source_b):
         rl = Relationship(source_a, relationship, source_b)
         # tx = self._graph.begin(autocommit=True)

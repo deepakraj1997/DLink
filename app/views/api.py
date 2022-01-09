@@ -81,7 +81,7 @@ def register():
                 nsrv_obj._graph.push(thing_node)
                 label_nodes = nsrv_obj.find_nodes_by_template(rel_thing_id, {"setup": True})
                 label_node = None
-                setup_args = {"setup": True}
+                setup_args = {"setup": True, "name": rel_thing_id}
                 if not label_nodes:
                     label_node = nsrv_obj.create_node(rel_thing_id, **setup_args)
                 else:
@@ -89,6 +89,17 @@ def register():
                 nsrv_obj.create_relationship(thing_node, rel, label_node)
     
     return make_response("Created", 200)
+
+@api.route('/delete', methods=['POST', 'DELETE'])
+@api.route('/delete/<thing_id>', methods=['POST', 'DELETE'])
+def delete(thing_id):
+    """
+        Deletes a thing
+    """
+    nsrv_obj = Neo4jService()
+    thing_node = nsrv_obj.find_nodes_by_template("ThingDescription", {"thing_id":thing_id})[0]
+    nsrv_obj.delete_node(thing_node)
+    return make_response("Deleted", 200)
 
 # @api.route('/update_links', methods=['POST'])
 # def update_links():
@@ -129,9 +140,4 @@ def register():
 #             new_err = ERROR_JSON
 #             new_err["error"] += "Thing in links not found"
 #             return jsonify(new_err), 400
-
-@api.route('/delete', methods=['POST'])
-def delete():
-    """Deletes a thing
-    """
     

@@ -127,10 +127,5 @@
         "href": "building_setup",
         "rel": "belongsTo",
         "mediaType": "application/td"
-    },
-    {
-        "href": "cam_setup",
-        "rel": "belongsTo",
-        "mediaType": "application/td"
     }]
 }

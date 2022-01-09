@@ -62,11 +62,6 @@
             "mediaType": "application/td"
         },
         {
-            "href": "cam_setup",
-            "rel": "belongsTo",
-            "mediaType": "application/td"
-        },
-        {
             "href": "urn:dev:wot:com:controller:building:1",
             "rel": "controlledBy",
             "mediaType": "application/td"

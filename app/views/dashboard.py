@@ -38,12 +38,32 @@ def links():
     # [{'m': Node('home_setup', setup=True)}, {'m': Node('home_setup', setup=True)}]
     return render_template("links.html", tagname = 'links', setup = setups_labels[0] if setups_labels else "", setup_labels = set(setups_labels))
 
+@dashboard.route('/delete/<setup>')
+def delete_setup(setup):
+    """
+    Render the thing description deletion page for the 'dashboard' module
+    """
+    nsrv_obj = Neo4jService()
+    all_setups = nsrv_obj.run_q("MATCH (n)-[:belongsTo]->(m) RETURN m", {})
+    setups_json = all_setups.data()
+    setups_labels = list(set([list(node['m'].labels)[0] for node in setups_json]))
+    nodes = nsrv_obj.run_q("MATCH (n)-[:belongsTo]->(m) where m.name=$setup RETURN n", {"setup":setup}).data()
+    clean_nodes = [node['n'] for node in nodes]
+    return render_template("delete.html", tagname = 'delete', setup = setup, setup_nodes = clean_nodes, setups_labels = setups_labels)
+
 @dashboard.route('/delete')
 def delete():
     """
     Render the thing description deletion page for the 'dashboard' module
     """
-    return render_template("delete.html", tagname = 'delete')
+    nsrv_obj = Neo4jService()
+    all_setups = nsrv_obj.run_q("MATCH (n)-[:belongsTo]->(m) RETURN m", {})
+    setups_json = all_setups.data()
+    setups_labels = list(set([list(node['m'].labels)[0] for node in setups_json]))
+    # for setup in setups_labels:
+    nodes = nsrv_obj.run_q("MATCH (n)-[:belongsTo]->(m) where m.name=$setup RETURN n", {"setup":setups_labels[0]}).data()
+    clean_nodes = [node['n'] for node in nodes]
+    return render_template("delete.html", tagname = 'delete', setup = setups_labels[0] if setups_labels else "", setup_nodes = clean_nodes, setups_labels = setups_labels)
 
 @dashboard.route('/register')
 def register():

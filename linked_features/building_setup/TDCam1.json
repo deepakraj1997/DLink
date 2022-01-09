@@ -130,7 +130,7 @@
     },
     {
         "href": "cam_setup",
-        "rel": "belongsTo",
+        "rel": "feeds",
         "mediaType": "application/td"
     }]
 }
