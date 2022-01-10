@@ -1,8 +1,8 @@
 {
     "@context": "https://www.w3.org/2019/wot/td/v1",
-    "id": "urn:dev:wot:com:smartplug:plug:3",
-    "title": "smart-plug",
-    "@type": "smartplug",
+    "id": "urn:dev:wot:com:controller:hvac:1",
+    "title": "hvac-controller",
+    "@type": "smart_controller",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",
@@ -19,13 +19,13 @@
         "on": {
             "writable": true,
             "schema": { "type": "boolean" },
-            "forms": [{ "href": "/things/lamp/properties/on" }],
+            "forms": [{ "href": "/things/smart_controller/properties/on" }],
             "status": true
-          }
+        }
     },
     "actions": {
-        "on": {
-            "description": "On the plug",
+        "switch_on_all": {
+            "description": "Switch on all childs",
             "forms": [
                 {
                     "href": "http:www.a.a",
@@ -35,14 +35,14 @@
                     ],
                     "function": "on",
                     "negate": false,
-                    "type": "self"
+                    "type": "dependents"
                 }
             ],
             "safe": false,
             "idempotent": false
-        }, 
-        "off": {
-            "description": "Off the plug",
+        },
+        "switch_off_all": {
+            "description": "Switch off all childs",
             "forms": [
                 {
                     "href": "http:www.a.a",
@@ -52,7 +52,7 @@
                     ],
                     "function": "on",
                     "negate": true,
-                    "type": "self"
+                    "type": "dependents"
                 }
             ],
             "safe": false,
@@ -60,51 +60,28 @@
         }
     },
     "events": {
-        "send_status": {
-            "description": "Send status to the controller",
+        "irregular_shutdown": {
+            "description": "Emergency / Failure shutdown",
             "forms": [
                 {
                     "href": "http:www.a.a",
                     "contentType": "application/json",
                     "op": [
-                        "heartbeat"
-                    ]
-                }
-            ]
-        },
-        "get_status": {
-            "description": "Get status from the controller",
-            "forms": [
-                {
-                    "href": "http:www.a.a",
-                    "contentType": "application/json",
-                    "op": [
-                        "heartbeat"
-                    ]
-                }
-            ]
-        },
-        "alert": {
-            "description": "Send alert to the controller",
-            "forms": [
-                {
-                    "href": "http:www.a.a",
-                    "contentType": "application/json",
-                    "op": [
-                        "heartbeat"
+                        "subscribeevent"
                     ]
                 }
             ]
         }
     },
-    "links": [{
-        "href": "urn:dev:wot:com:controller:building:1",
-        "rel": "controlledBy",
-        "mediaType": "application/td"
-    },
-    {
-        "href": "building_setup",
-        "rel": "belongsTo",
-        "mediaType": "application/td"
-    }]
+    "links": [
+        {
+            "href": "building_setup",
+            "rel": "belongsTo",
+            "mediaType": "application/td"
+        },
+        {
+            "href": "urn:dev:wot:com:controller:building:1",
+            "rel": "connectedTo",
+            "mediaType": "application/td"
+        }]
 }

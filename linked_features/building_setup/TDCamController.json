@@ -19,21 +19,78 @@
         "on": {
             "writable": true,
             "schema": { "type": "boolean" },
-            "forms": [{ "href": "/things/smart_controller/properties/on" }]
+            "forms": [{ "href": "/things/smart_controller/properties/on" }],
+            "status": true
         }
     },
     "actions": {
         "switch_on_all": {
-            "inputSchema": {
-              "type": "object",
-              "fields": [
+            "description": "Switch on all childs",
+            "forms": [
                 {
-                    "name": "on",
-                    "schema": { "type": "boolean" }
+                    "href": "http:www.a.a",
+                    "contentType": "application/json",
+                    "op": [
+                        "invokeaction"
+                    ],
+                    "function": "on",
+                    "negate": false,
+                    "type": "dependents"
                 }
-            ]
-            },
-            "forms": [{ "href": "/things/smart_controller/actions/switch_on_all" }]
+            ],
+            "safe": false,
+            "idempotent": false
+        },
+        "switch_off_all": {
+            "description": "Switch off all childs",
+            "forms": [
+                {
+                    "href": "http:www.a.a",
+                    "contentType": "application/json",
+                    "op": [
+                        "invokeaction"
+                    ],
+                    "function": "on",
+                    "negate": true,
+                    "type": "dependents"
+                }
+            ],
+            "safe": false,
+            "idempotent": false
+        },
+        "record-on-all": {
+            "description": "Start Recording",
+            "forms": [
+                {
+                    "href": "http:www.a.a",
+                    "contentType": "application/json",
+                    "op": [
+                        "invokeaction"
+                    ],
+                    "function": "recording-on",
+                    "negate": false,
+                    "type": "self"
+                }
+            ],
+            "safe": false,
+            "idempotent": false
+        },
+        "record-off-all": {
+            "description": "Stop Recording",
+            "forms": [
+                {
+                    "href": "http:www.a.a",
+                    "contentType": "application/json",
+                    "op": [
+                        "invokeaction"
+                    ],
+                    "function": "recording-on",
+                    "negate": true,
+                    "type": "self"
+                }
+            ],
+            "safe": false,
+            "idempotent": false
         }
     },
     "events": {
@@ -57,7 +114,7 @@
             "mediaType": "application/td"
         },
         {
-            "href": "urn:dev:wot:com:noniot:router:1",
+            "href": "urn:dev:wot:com:noniot:router:2",
             "rel": "connectedTo",
             "mediaType": "application/td"
         },
@@ -65,5 +122,6 @@
             "href": "urn:dev:wot:com:controller:building:1",
             "rel": "controlledBy",
             "mediaType": "application/td"
-        }]
+        }
+    ]
 }

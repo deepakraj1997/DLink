@@ -1,7 +1,7 @@
 {
     "@context": "https://www.w3.org/2019/wot/td/v1",
     "id": "urn:dev:wot:com:smartcam:cam:4",
-    "title": "smart-cam-3",
+    "title": "smart-cam-2",
     "@type": "smartcam",
     "securityDefinitions": {
         "basic_sc": {
@@ -19,8 +19,15 @@
         "on": {
             "writable": true,
             "schema": { "type": "boolean" },
-            "forms": [{ "href": "/things/lamp/properties/on" }]
-          }
+            "forms": [{ "href": "/things/lamp/properties/on" }],
+            "status": true
+          },
+        "recording-on": {
+            "writable": true,
+            "schema": { "type": "boolean" },
+            "forms": [{ "href": "/things/lamp/properties/recording" }],
+            "status": false
+        }
     },
     "actions": {
         "switch-on": {
@@ -31,12 +38,15 @@
                     "contentType": "application/json",
                     "op": [
                         "invokeaction"
-                    ]
+                    ],
+                    "function": "on",
+                    "negate": false,
+                    "type": "self"
                 }
             ],
             "safe": false,
             "idempotent": false
-        }, 
+        },
         "switch-off": {
             "description": "Off the cam",
             "forms": [
@@ -45,13 +55,16 @@
                     "contentType": "application/json",
                     "op": [
                         "invokeaction"
-                    ]
+                    ],
+                    "function": "on",
+                    "negate": true,
+                    "type": "self"
                 }
             ],
             "safe": false,
             "idempotent": false
-        }, 
-        "start-record": {
+        },
+        "record-on": {
             "description": "Start Recording",
             "forms": [
                 {
@@ -59,21 +72,27 @@
                     "contentType": "application/json",
                     "op": [
                         "invokeaction"
-                    ]
+                    ],
+                    "function": "recording-on",
+                    "negate": false,
+                    "type": "self"
                 }
             ],
             "safe": false,
             "idempotent": false
-        }, 
-        "stop-record": {
-            "description": "Start Recording",
+        },
+        "record-off": {
+            "description": "Stop Recording",
             "forms": [
                 {
                     "href": "http:www.a.a",
                     "contentType": "application/json",
                     "op": [
                         "invokeaction"
-                    ]
+                    ],
+                    "function": "recording-on",
+                    "negate": true,
+                    "type": "self"
                 }
             ],
             "safe": false,
@@ -126,6 +145,11 @@
     {
         "href": "building_setup",
         "rel": "belongsTo",
+        "mediaType": "application/td"
+    },
+    {
+        "href": "urn:dev:wot:com:noniot:zone:3",
+        "rel": "feeds",
         "mediaType": "application/td"
     }]
 }

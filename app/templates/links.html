@@ -46,16 +46,17 @@
       </div>
       </div>
     </div>
-    <div class="col" id="properties_div" style="visibility:hidden;">
-      <div class="card">
-        <div class="card-header" id="node_header">
+  </div>
+</br></br>
+  <div class="row mx-auto" id="properties_div" style="visibility:hidden;">
+    <div class="card">
+      <div class="card-header" id="node_header">
 
-        </div>
-        <ul class="list-group list-group-flush" id="node_properties">
-        
-        </ul>
-        <p> Please click on the node again to view the updated status</p>
       </div>
+      <ul class="list-group list-group-flush" id="node_properties">
+      
+      </ul>
+      <p> Please click on the node again to view the updated status</p>
     </div>
   </div>
 </div>
@@ -137,7 +138,7 @@
             node_properties = JSON.parse(node.raw.properties["properties"]);
             properties_to_show = [""]
             for(property in node_properties) {
-              document.getElementById("node_properties").innerHTML += '<li class="list-group-item">Name: ' + property + " Status: " + node_properties[property]["status"] + '</li>'
+              document.getElementById("node_properties").innerHTML += '<li class="list-group-item">NAME: ' + property + "       STATUS: " + node_properties[property]["status"] + '</li>'
             }
         });
     });
