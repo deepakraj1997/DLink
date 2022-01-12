@@ -14,8 +14,8 @@
         "mediaType": "application/td"
     },
     {
-        "href": "urn:dev:wot:com:noniot:zone:1",
-        "rel": "feeds",
+        "href": "urn:dev:wot:com:noniot:lightsystem:1",
+        "rel": "partOf",
         "mediaType": "application/td"
     }]
 }
