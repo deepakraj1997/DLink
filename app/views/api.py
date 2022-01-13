@@ -48,6 +48,25 @@ def register():
     fmt_td = format_thing_description(thing_description, ["id", "title"])
     new_td = ThingDescription(thing_id=thing_description["id"], title = thing_description["title"], **fmt_td)    
     nsrv_obj = Neo4jService()
+
+    if "links" in thing_description:
+        for link in thing_description["links"]:
+            rel = link["rel"]
+            rel_thing_id = link["href"]
+            if rel != "belongsTo":
+                try:
+                    # _ = ThingDescription.nodes.first(thing_id=rel_thing_id)
+                    rel_node = nsrv_obj.find_nodes_by_template("ThingDescription", {"thing_id":rel_thing_id})
+                    if not rel_node:
+                        raise error("Rel Thing not found")
+                except Exception as e:
+                    print(e)
+                    new_err = ERROR_JSON
+                    new_err["error"] += "Thing in links not found"
+                    return jsonify(new_err), 400
+                except Exception as e:
+                    return make_response("Internal Server Error", 500)
+
     try:
         # new_td.create_or_update() # new_td.save()
         new_td.save()
