@@ -44,5 +44,5 @@ wincertstore==0.2
 wrapt==1.11.2
 WTForms==2.2.1
 flask_cdn
-py2neo
-neomodel
+py2neo==2021.0.1
+neomodel==4.0.7

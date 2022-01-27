@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, make_response
 from neo4j_service import Neo4jService
 
 dashboard = Blueprint('dashboard', __name__)
@@ -47,7 +47,9 @@ def delete_setup(setup):
     all_setups = nsrv_obj.run_q("MATCH (n)-[:belongsTo]->(m) RETURN m", {})
     setups_json = all_setups.data()
     setups_labels = list(set([list(node['m'].labels)[0] for node in setups_json]))
-    nodes = nsrv_obj.run_q("MATCH (n)-[:belongsTo]->(m) where m.name=$setup RETURN n", {"setup":setup}).data()
+    nodes = list()
+    if setups_labels:
+        nodes = nsrv_obj.run_q("MATCH (n)-[:belongsTo]->(m) where m.name=$setup RETURN n", {"setup":setup}).data()
     clean_nodes = [node['n'] for node in nodes]
     return render_template("delete.html", tagname = 'delete', setup = setup, setup_nodes = clean_nodes, setups_labels = setups_labels)
 
@@ -61,7 +63,9 @@ def delete():
     setups_json = all_setups.data()
     setups_labels = list(set([list(node['m'].labels)[0] for node in setups_json]))
     # for setup in setups_labels:
-    nodes = nsrv_obj.run_q("MATCH (n)-[:belongsTo]->(m) where m.name=$setup RETURN n", {"setup":setups_labels[0]}).data()
+    nodes = list()
+    if setups_labels:
+        nodes = nsrv_obj.run_q("MATCH (n)-[:belongsTo]->(m) where m.name=$setup RETURN n", {"setup":setups_labels[0]}).data()
     clean_nodes = [node['n'] for node in nodes]
     return render_template("delete.html", tagname = 'delete', setup = setups_labels[0] if setups_labels else "", setup_nodes = clean_nodes, setups_labels = setups_labels)
 
